@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package helloworld;
+
+option go_package="github.com/Q1mi/greeter/proto/helloworld";
+
+// 定义一个Greeter服务
+service Greeter {
+  // 打招呼方法
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// 定义请求的message
+message HelloRequest {
+  string name = 1;
+}
+
+// 定义响应的message
+message HelloReply {
+  string message = 1;
+}
