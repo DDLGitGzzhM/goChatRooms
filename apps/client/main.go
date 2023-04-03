@@ -35,8 +35,11 @@ func main() {
 	// 测试部分
 	//rply, err := c.Registration(ctx, &pb.RegistrationReq{Name: "G1", Passwd: "mx179516"})
 
-	rply, err := c.Login(ctx, &pb.LoginReq{Name: "G1", Password: "mx179516"})
+	//rply, err := c.Login(ctx, &pb.LoginReq{Name: "G1", Password: "mx179516"})
+	//rply, err := c.Logout(ctx, &pb.LogoutReq{Name: "xiaowang"})
+	rply, err := c.GetOnlineUserList(ctx, &pb.OnlineUserListReq{})
 	fmt.Println("reply :", rply)
+
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

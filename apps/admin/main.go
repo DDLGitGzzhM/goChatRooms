@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"test/controller/login"
+	"test/controller/logout"
 	"test/controller/user"
 	"test/utils"
 	"test/utils/database"
@@ -38,10 +39,12 @@ func (s *server) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginRsp, erro
 	return nil, err
 }
 func (s *server) Logout(ctx context.Context, in *pb.LogoutReq) (*pb.LogoutRsp, error) {
-	return nil, nil
+	err := logout.Logout(in.Name)
+	return nil, err
 }
-func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq) (*pb.OnlineUserListRsp, error) {
-	return nil, nil
+func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq) (out *pb.OnlineUserListRsp, err error) {
+	out.Name, err = user.GetUserList()
+	return out, err
 }
 func main() {
 	// Create a listener on TCP port
