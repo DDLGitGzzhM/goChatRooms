@@ -2,8 +2,10 @@ package user
 
 import (
 	"fmt"
+	"math/rand"
 	"test/dao"
 	"test/models"
+	"test/utils"
 	"time"
 )
 
@@ -28,8 +30,10 @@ func AddUser(name, password string) (err error) {
 	}
 	user := models.User{}
 	user.Name = name
-	user.Password = password
+	user.Salt = fmt.Sprintf("%06d", rand.Int31())
+	user.Password = utils.MakePassword(password, user.Salt)
 	user.Status = "上线"
+
 	user.CTime = time.Now()
 	user.MTime = time.Now()
 	user.IsDelete = false

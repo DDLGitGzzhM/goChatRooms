@@ -6,6 +6,7 @@ import (
 	"net"
 	"test/controller/user"
 	"test/utils"
+	"test/utils/database"
 
 	pb "test/protocol/admin"
 
@@ -15,8 +16,8 @@ import (
 
 func init() {
 	utils.InitConfig()
-	utils.InitMySQL()
-	utils.InitRedis()
+	database.InitMySQL()
+	database.InitRedis()
 }
 
 type server struct {
