@@ -47,8 +47,8 @@ message LogoutRsp{}
 
 // OnlineUserListReq 在线列表信息请求
 message OnlineUserListReq{
-  repeated string name = 1;
 }
 // OnlineUserListResp 在线列表信息响应
 message OnlineUserListRsp{
+  repeated string name = 1;
 }

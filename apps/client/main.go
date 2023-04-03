@@ -32,9 +32,11 @@ func main() {
 	// 延迟关闭请求会话
 	defer cancel()
 
-	// 调用SayHello接口，发送一条消息
-	rply, err := c.Registration(ctx, &pb.RegistrationReq{Name: "xiaowang"})
-	fmt.Println(rply)
+	// 测试部分
+	//rply, err := c.Registration(ctx, &pb.RegistrationReq{Name: "G1", Passwd: "mx179516"})
+
+	rply, err := c.Login(ctx, &pb.LoginReq{Name: "G1", Password: "mx179516"})
+	fmt.Println("reply :", rply)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

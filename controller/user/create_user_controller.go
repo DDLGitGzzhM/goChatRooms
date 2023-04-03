@@ -36,7 +36,7 @@ func AddUser(name, password string) (err error) {
 			ErrorMessage: "用户名太长或者太短",
 		}
 	}
-	if len(password) >= 100 || name == "" {
+	if len(password) >= 100 || password == "" {
 		return &UserError{
 			ErrorCode:    1,
 			ErrorMessage: "密码太长 或者 太短",

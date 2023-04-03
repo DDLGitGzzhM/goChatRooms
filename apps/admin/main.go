@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net"
+	"test/controller/login"
 	"test/controller/user"
 	"test/utils"
 	"test/utils/database"
@@ -28,11 +29,20 @@ func NewServer() pb.AdminServer {
 	return &server{}
 }
 
-func (s *server) Registration(ctx context.Context, in *pb.RegistrationReq) (*pb.RegistrationReq, error) {
+func (s *server) Registration(ctx context.Context, in *pb.RegistrationReq) (*pb.RegistrationRsp, error) {
 	err := user.AddUser(in.Name, in.Passwd)
 	return nil, err
 }
-
+func (s *server) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginRsp, error) {
+	err := login.Login(in.Name, in.Password)
+	return nil, err
+}
+func (s *server) Logout(ctx context.Context, in *pb.LogoutReq) (*pb.LogoutRsp, error) {
+	return nil, nil
+}
+func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq) (*pb.OnlineUserListRsp, error) {
+	return nil, nil
+}
 func main() {
 	// Create a listener on TCP port
 	lis, err := net.Listen("tcp", ":9999")
