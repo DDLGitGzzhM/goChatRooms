@@ -29,7 +29,7 @@ func FindUserByName(name string) models.User {
 
 // DeleteUser
 // 删除用户真实的删除
-func DeleteUser(user models.User) *gorm.DB {
+func DeleteUser(user *models.User) *gorm.DB {
 	return database.DB.Delete(&user)
 }
 

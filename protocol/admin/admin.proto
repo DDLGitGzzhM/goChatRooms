@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package helloworld;
-option go_package="/github/admin";
+package admin;
+option go_package="/.;";
 
 // 定义一个Admin服务
 service Admin {
   // 注册接口
   rpc Registration(RegistrationReq) returns (RegistrationRsp){};
   // 登录接口
-
+  rpc Login(LoginReq) returns (LoginRsp){}
   // 登出接口
-
+  rpc Logout(LogoutReq) returns (LogoutRsp){}
   // 在线列表信息
-
+  rpc GetOnlineUserList(OnlineUserListReq) returns (OnlineUserListRsp){}
   // 拉黑/加白
 
   // 发送消息
@@ -28,4 +28,27 @@ message RegistrationReq {
 
 // RegistrationRsp 注册响应
 message RegistrationRsp{
+}
+// LoginReq 登录请求
+message LoginReq {
+  string name = 1;
+  string password = 2;
+}
+// LoginRsp 登录响应
+message LoginRsp{
+
+}
+// LogoutReq 登出请求
+message LogoutReq{
+  string name = 1;
+}
+// LogoutResp 登出响应
+message LogoutRsp{}
+
+// OnlineUserListReq 在线列表信息请求
+message OnlineUserListReq{
+  repeated string name = 1;
+}
+// OnlineUserListResp 在线列表信息响应
+message OnlineUserListRsp{
 }
