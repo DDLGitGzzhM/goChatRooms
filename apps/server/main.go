@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"test/utils"
 
 	pb "test/protocol/helloworld"
 
@@ -12,6 +13,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
+
+func init() {
+	utils.InitConfig()
+	utils.InitMySQL()
+	utils.InitRedis()
+}
 
 type server struct {
 	pb.UnimplementedGreeterServer

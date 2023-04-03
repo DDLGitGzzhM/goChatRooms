@@ -8,9 +8,11 @@ service Admin {
   // 注册接口
   rpc Registration(RegistrationReq) returns (RegistrationRsp){};
   // 登录接口
+
   // 登出接口
 
   // 在线列表信息
+
   // 拉黑/加白
 
   // 发送消息

@@ -11,14 +11,15 @@ import (
 	"google.golang.org/grpc"
 )
 
-type serverImp struct {
+type server struct {
+	pb.UnimplementedAdminServer
 }
 
 func NewServer() pb.AdminServer {
-	return &serverImp{}
+	return &server{}
 }
 
-func (s *serverImp) Registration(context.Context, *pb.RegistrationReq) (*pb.RegistrationReq, error) {
+func (s *server) Registration(context.Context, *pb.RegistrationReq) (*pb.RegistrationReq, error) {
 	return nil, nil
 }
 
@@ -32,7 +33,7 @@ func main() {
 	// 创建一个gRPC server对象
 	s := grpc.NewServer()
 	// 注册Greeter service到server
-	pb.RegisterAdminServer(s, server{})
+	pb.RegisterAdminServer(s, &server{})
 	// 启动gRPC Server
 	log.Println("Serving gRPC on 0.0.0.0:8080")
 	log.Fatal(s.Serve(lis))
