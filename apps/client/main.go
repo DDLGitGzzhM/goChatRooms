@@ -33,10 +33,7 @@ func main() {
 	defer cancel()
 
 	// 调用SayHello接口，发送一条消息
-	rply, err := c.Registration(ctx, &pb.RegistrationReq{
-		Name:   "xiaowang",
-		Passwd: "1234",
-	})
+	rply, err := c.Registration(ctx, &pb.RegistrationReq{Name: "xiaowang"})
 	fmt.Println(rply)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)

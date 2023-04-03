@@ -22,10 +22,24 @@ func (e *UserError) Error() string {
 	return fmt.Sprintf("error code: %d, message: %s", e.ErrorCode, e.ErrorMessage)
 }
 func AddUser(name, password string) (err error) {
-	if len(name) > 20 {
+	temp, _ := FindUserByName(name)
+
+	if temp == nil {
 		return &UserError{
 			ErrorCode:    1,
-			ErrorMessage: "用户名太长",
+			ErrorMessage: "不能重复创建",
+		}
+	}
+	if len(name) > 20 || name == "" {
+		return &UserError{
+			ErrorCode:    1,
+			ErrorMessage: "用户名太长或者太短",
+		}
+	}
+	if len(password) >= 100 || name == "" {
+		return &UserError{
+			ErrorCode:    1,
+			ErrorMessage: "密码太长 或者 太短",
 		}
 	}
 	user := models.User{}
