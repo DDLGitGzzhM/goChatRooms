@@ -22,6 +22,7 @@ const (
 	Admin_Registration_FullMethodName          = "/admin.Admin/Registration"
 	Admin_Login_FullMethodName                 = "/admin.Admin/Login"
 	Admin_Logout_FullMethodName                = "/admin.Admin/Logout"
+	Admin_Logoff_FullMethodName                = "/admin.Admin/Logoff"
 	Admin_GetOnlineUserList_FullMethodName     = "/admin.Admin/GetOnlineUserList"
 	Admin_AddAndRemoveBlackList_FullMethodName = "/admin.Admin/AddAndRemoveBlackList"
 	Admin_SendMessage_FullMethodName           = "/admin.Admin/SendMessage"
@@ -37,6 +38,8 @@ type AdminClient interface {
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginRsp, error)
 	// 登出接口
 	Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutRsp, error)
+	// 注销接口
+	Logoff(ctx context.Context, in *LogoffReq, opts ...grpc.CallOption) (*LogoffRsp, error)
 	// 在线列表信息
 	GetOnlineUserList(ctx context.Context, in *OnlineUserListReq, opts ...grpc.CallOption) (*OnlineUserListRsp, error)
 	// 拉黑/加白
@@ -80,6 +83,15 @@ func (c *adminClient) Logout(ctx context.Context, in *LogoutReq, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *adminClient) Logoff(ctx context.Context, in *LogoffReq, opts ...grpc.CallOption) (*LogoffRsp, error) {
+	out := new(LogoffRsp)
+	err := c.cc.Invoke(ctx, Admin_Logoff_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *adminClient) GetOnlineUserList(ctx context.Context, in *OnlineUserListReq, opts ...grpc.CallOption) (*OnlineUserListRsp, error) {
 	out := new(OnlineUserListRsp)
 	err := c.cc.Invoke(ctx, Admin_GetOnlineUserList_FullMethodName, in, out, opts...)
@@ -117,6 +129,8 @@ type AdminServer interface {
 	Login(context.Context, *LoginReq) (*LoginRsp, error)
 	// 登出接口
 	Logout(context.Context, *LogoutReq) (*LogoutRsp, error)
+	// 注销接口
+	Logoff(context.Context, *LogoffReq) (*LogoffRsp, error)
 	// 在线列表信息
 	GetOnlineUserList(context.Context, *OnlineUserListReq) (*OnlineUserListRsp, error)
 	// 拉黑/加白
@@ -138,6 +152,9 @@ func (UnimplementedAdminServer) Login(context.Context, *LoginReq) (*LoginRsp, er
 }
 func (UnimplementedAdminServer) Logout(context.Context, *LogoutReq) (*LogoutRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+}
+func (UnimplementedAdminServer) Logoff(context.Context, *LogoffReq) (*LogoffRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Logoff not implemented")
 }
 func (UnimplementedAdminServer) GetOnlineUserList(context.Context, *OnlineUserListReq) (*OnlineUserListRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOnlineUserList not implemented")
@@ -215,6 +232,24 @@ func _Admin_Logout_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_Logoff_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LogoffReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).Logoff(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_Logoff_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).Logoff(ctx, req.(*LogoffReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Admin_GetOnlineUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(OnlineUserListReq)
 	if err := dec(in); err != nil {
@@ -287,6 +322,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Logout",
 			Handler:    _Admin_Logout_Handler,
+		},
+		{
+			MethodName: "Logoff",
+			Handler:    _Admin_Logoff_Handler,
 		},
 		{
 			MethodName: "GetOnlineUserList",

@@ -6,6 +6,7 @@ type Message struct {
 	//  基本字段
 	ID        int
 	UserId    int       `gorm:"column:userId"`
+	TargetId  int       `gorm:"column:targetId"`
 	RoomId    int       `gorm:"column:roomId"`
 	IsSendAll bool      `gorm:"column:isSendAll"`
 	ToUserIds string    `gorm:"column:toUserIds"`

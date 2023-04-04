@@ -15,6 +15,13 @@ func Login(name, password string) error {
 		}
 	}
 
+	if temp.IsDelete == true {
+		return &user.UserError{
+			ErrorCode:    1,
+			ErrorMessage: "用户已注销",
+		}
+	}
+
 	if utils.ValidPassword(password, temp.Salt, temp.Password) == false {
 		return &user.UserError{
 			ErrorCode:    1,

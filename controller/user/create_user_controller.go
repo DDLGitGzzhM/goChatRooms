@@ -30,6 +30,14 @@ func AddUser(name, password string) (err error) {
 			ErrorMessage: "不能重复创建",
 		}
 	}
+
+	if temp.IsDelete == true {
+		return &UserError{
+			ErrorCode:    1,
+			ErrorMessage: "用户已经被注销",
+		}
+	}
+
 	if len(name) > 20 || name == "" {
 		return &UserError{
 			ErrorCode:    1,

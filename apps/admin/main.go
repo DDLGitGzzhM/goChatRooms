@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"test/controller/login"
+	"test/controller/logoff"
 	"test/controller/logout"
 	"test/controller/message"
 	"test/controller/user"
@@ -50,6 +51,13 @@ func (s *server) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginRsp, erro
 // 用于用户的登出
 func (s *server) Logout(ctx context.Context, in *pb.LogoutReq) (*pb.LogoutRsp, error) {
 	err := logout.Logout(in.Name)
+	return nil, err
+}
+
+// Logoff
+// 用于用户的注销
+func (s *server) Logoff(ctx context.Context, in *pb.LogoffReq) (*pb.LogoffRsp, error) {
+	err := logoff.Logoff(in.Name)
 	return nil, err
 }
 

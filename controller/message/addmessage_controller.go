@@ -1,6 +1,7 @@
 package message
 
 import (
+	"fmt"
 	"test/dao"
 	"test/models"
 	pb "test/protocol/admin"
@@ -14,6 +15,10 @@ type MessageError struct {
 	ErrorCode int
 	//	错误信息
 	ErrorMessage string
+}
+
+func (e MessageError) Error() string {
+	return fmt.Sprintf("error code: %d, message: %s", e.ErrorCode, e.ErrorMessage)
 }
 
 func AddMessage(req *pb.SendMessageReq) MessageError {

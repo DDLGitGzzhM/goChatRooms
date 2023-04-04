@@ -12,6 +12,8 @@ service Admin {
   rpc Login(LoginReq) returns (LoginRsp){}
   // 登出接口
   rpc Logout(LogoutReq) returns (LogoutRsp){}
+  // 注销接口
+  rpc Logoff(LogoffReq) returns (LogoffRsp){}
   // 在线列表信息
   rpc GetOnlineUserList(OnlineUserListReq) returns (OnlineUserListRsp){}
   // 拉黑/加白
@@ -65,9 +67,16 @@ message AddAndRemoveBlackListRsp{
 message SendMessageReq{
   int64 userId = 1;
   int64 roomId = 2;
-  bool  isSendAll = 3;
-  string toUserIds = 4;
-  string content = 5;
+  int64 targetId = 3;
+  bool  isSendAll = 4;
+  string toUserIds = 5;
+  string content = 6;
 }
 message SendMessageRsp{
 }
+// LogoutReq 登出请求
+message LogoffReq{
+  string name = 1;
+}
+// LogoutResp 登出响应
+message LogoffRsp{}
