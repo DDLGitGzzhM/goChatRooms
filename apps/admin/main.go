@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"test/controller/login"
@@ -43,7 +44,10 @@ func (s *server) Logout(ctx context.Context, in *pb.LogoutReq) (*pb.LogoutRsp, e
 	return nil, err
 }
 func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq) (out *pb.OnlineUserListRsp, err error) {
+	//	先初始化再使用!
 	out.Name, err = user.GetUserList()
+
+	fmt.Println("out.Name :", out.Name)
 	return out, err
 }
 func main() {

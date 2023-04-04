@@ -6,8 +6,11 @@ import (
 
 func GetUserList() ([]string, error) {
 	users := dao.GetUserList("上线")
-	// 这里传一个切片 不过传的是名字
-	sname := make([]string, 10)
+
+	// 这里传一个切片
+	// sname 切片用于存储上线用户
+	// 因为不会proto 里面存储user 所以使用[]string
+	sname := make([]string, 0)
 	for _, val := range users {
 		sname = append(sname, val.Name)
 	}
