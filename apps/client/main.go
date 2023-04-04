@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -42,13 +43,21 @@ func main() {
 	//fmt.Println("rply: ", rply)
 	//fmt.Println("rply.Name :", rply.Name)
 
-	rply, err := c.AddAndRemoveBlackList(ctx, &pb.AddAndRemoveBlackListReq{
-		OwnerId:  2,
-		TargetId: 3,
-		Type:     3,
+	//rply, err := c.AddAndRemoveBlackList(ctx, &pb.AddAndRemoveBlackListReq{
+	//	OwnerId:  2,
+	//	TargetId: 3,
+	//	Type:     3,
+	//})
+	emptyJson, err := json.Marshal(map[string]interface{}{})
+	rply, err := c.SendMessage(ctx, &pb.SendMessageReq{
+		UserId:    2,
+		RoomId:    1,
+		IsSendAll: true,
+		ToUserIds: string(emptyJson),
+		Content:   "你好 , 世界",
 	})
-	fmt.Println("rply :", rply)
-	fmt.Println("err  :", err)
+	fmt.Println(rply)
+
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

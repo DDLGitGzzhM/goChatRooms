@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package admin;
+import "google/protobuf/descriptor.proto";
 option go_package="/.;";
 
 // 定义一个Admin服务
@@ -15,9 +16,8 @@ service Admin {
   rpc GetOnlineUserList(OnlineUserListReq) returns (OnlineUserListRsp){}
   // 拉黑/加白
   rpc AddAndRemoveBlackList(AddAndRemoveBlackListReq) returns(AddAndRemoveBlackListRsp){}
-
   // 发送消息
-
+  rpc SendMessage(SendMessageReq)returns(SendMessageRsp){}
 }
 
 // RegistrationReq 注册请求
@@ -60,4 +60,14 @@ message AddAndRemoveBlackListReq{
   int32 Type  = 3;
 }
 message AddAndRemoveBlackListRsp{
+}
+
+message SendMessageReq{
+  int64 userId = 1;
+  int64 roomId = 2;
+  bool  isSendAll = 3;
+  string toUserIds = 4;
+  string content = 5;
+}
+message SendMessageRsp{
 }

@@ -6,6 +6,7 @@ import (
 	"net"
 	"test/controller/login"
 	"test/controller/logout"
+	"test/controller/message"
 	"test/controller/user"
 	"test/controller/user_contact"
 	"test/utils"
@@ -63,10 +64,20 @@ func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq
 	return out, err
 }
 
+// AddAndRemoveBlackList
+// 黑名单操作
+
 func (s *server) AddAndRemoveBlackList(ctx context.Context, in *pb.AddAndRemoveBlackListReq) (out *pb.AddAndRemoveBlackListRsp, err error) {
 	// 因为是int32 这里做一层转换
 	err = user_contact.ChangeFriendContact(int(in.OwnerId), int(in.TargetId), int(in.Type))
 
+	return nil, err
+}
+
+// SendMessage
+// 发送消息
+func (s *server) SendMessage(ctx context.Context, in *pb.SendMessageReq) (out *pb.SendMessageRsp, err error) {
+	message.AddMessage(in)
 	return nil, err
 }
 
