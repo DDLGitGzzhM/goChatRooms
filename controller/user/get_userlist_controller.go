@@ -14,8 +14,5 @@ func GetUserList() ([]string, error) {
 	for _, val := range users {
 		sname = append(sname, val.Name)
 	}
-	return sname, &UserError{
-		ErrorCode:    0,
-		ErrorMessage: "查询用户列表成功",
-	}
+	return sname, nil
 }

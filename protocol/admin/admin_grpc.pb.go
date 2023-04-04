@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Admin_Registration_FullMethodName      = "/admin.Admin/Registration"
-	Admin_Login_FullMethodName             = "/admin.Admin/Login"
-	Admin_Logout_FullMethodName            = "/admin.Admin/Logout"
-	Admin_GetOnlineUserList_FullMethodName = "/admin.Admin/GetOnlineUserList"
+	Admin_Registration_FullMethodName          = "/admin.Admin/Registration"
+	Admin_Login_FullMethodName                 = "/admin.Admin/Login"
+	Admin_Logout_FullMethodName                = "/admin.Admin/Logout"
+	Admin_GetOnlineUserList_FullMethodName     = "/admin.Admin/GetOnlineUserList"
+	Admin_AddAndRemoveBlackList_FullMethodName = "/admin.Admin/AddAndRemoveBlackList"
 )
 
 // AdminClient is the client API for Admin service.
@@ -37,6 +38,8 @@ type AdminClient interface {
 	Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutRsp, error)
 	// 在线列表信息
 	GetOnlineUserList(ctx context.Context, in *OnlineUserListReq, opts ...grpc.CallOption) (*OnlineUserListRsp, error)
+	// 拉黑/加白
+	AddAndRemoveBlackList(ctx context.Context, in *AddAndRemoveBlackListReq, opts ...grpc.CallOption) (*AddAndRemoveBlackListRsp, error)
 }
 
 type adminClient struct {
@@ -83,6 +86,15 @@ func (c *adminClient) GetOnlineUserList(ctx context.Context, in *OnlineUserListR
 	return out, nil
 }
 
+func (c *adminClient) AddAndRemoveBlackList(ctx context.Context, in *AddAndRemoveBlackListReq, opts ...grpc.CallOption) (*AddAndRemoveBlackListRsp, error) {
+	out := new(AddAndRemoveBlackListRsp)
+	err := c.cc.Invoke(ctx, Admin_AddAndRemoveBlackList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminServer is the server API for Admin service.
 // All implementations must embed UnimplementedAdminServer
 // for forward compatibility
@@ -95,6 +107,8 @@ type AdminServer interface {
 	Logout(context.Context, *LogoutReq) (*LogoutRsp, error)
 	// 在线列表信息
 	GetOnlineUserList(context.Context, *OnlineUserListReq) (*OnlineUserListRsp, error)
+	// 拉黑/加白
+	AddAndRemoveBlackList(context.Context, *AddAndRemoveBlackListReq) (*AddAndRemoveBlackListRsp, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -113,6 +127,9 @@ func (UnimplementedAdminServer) Logout(context.Context, *LogoutReq) (*LogoutRsp,
 }
 func (UnimplementedAdminServer) GetOnlineUserList(context.Context, *OnlineUserListReq) (*OnlineUserListRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOnlineUserList not implemented")
+}
+func (UnimplementedAdminServer) AddAndRemoveBlackList(context.Context, *AddAndRemoveBlackListReq) (*AddAndRemoveBlackListRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAndRemoveBlackList not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 
@@ -199,6 +216,24 @@ func _Admin_GetOnlineUserList_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_AddAndRemoveBlackList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddAndRemoveBlackListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).AddAndRemoveBlackList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_AddAndRemoveBlackList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).AddAndRemoveBlackList(ctx, req.(*AddAndRemoveBlackListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Admin_ServiceDesc is the grpc.ServiceDesc for Admin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -221,6 +256,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOnlineUserList",
 			Handler:    _Admin_GetOnlineUserList_Handler,
+		},
+		{
+			MethodName: "AddAndRemoveBlackList",
+			Handler:    _Admin_AddAndRemoveBlackList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

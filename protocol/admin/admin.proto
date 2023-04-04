@@ -14,6 +14,7 @@ service Admin {
   // 在线列表信息
   rpc GetOnlineUserList(OnlineUserListReq) returns (OnlineUserListRsp){}
   // 拉黑/加白
+  rpc AddAndRemoveBlackList(AddAndRemoveBlackListReq) returns(AddAndRemoveBlackListRsp){}
 
   // 发送消息
 
@@ -51,4 +52,12 @@ message OnlineUserListReq{
 // OnlineUserListResp 在线列表信息响应
 message OnlineUserListRsp{
   repeated string name = 1;
+}
+
+message AddAndRemoveBlackListReq{
+  int32 OwnerId = 1;
+  int32 TargetId = 2;
+  int32 Type  = 3;
+}
+message AddAndRemoveBlackListRsp{
 }

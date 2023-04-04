@@ -37,10 +37,18 @@ func main() {
 	//rply, err := c.Login(ctx, &pb.LoginReq{Name: "G1", Password: "mx179516"})
 	//rply, err := c.Logout(ctx, &pb.LogoutReq{Name: "xiaowang"})
 
-	rply, err := c.GetOnlineUserList(ctx, &pb.OnlineUserListReq{})
-	fmt.Println("rply: ", rply)
-	fmt.Println("rply.Name :", rply.Name)
+	// 这里后期需要注意 , 因为这里并不能返回error
+	//rply, err := c.GetOnlineUserList(ctx, &pb.OnlineUserListReq{})
+	//fmt.Println("rply: ", rply)
+	//fmt.Println("rply.Name :", rply.Name)
 
+	rply, err := c.AddAndRemoveBlackList(ctx, &pb.AddAndRemoveBlackListReq{
+		OwnerId:  2,
+		TargetId: 3,
+		Type:     3,
+	})
+	fmt.Println("rply :", rply)
+	fmt.Println("err  :", err)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

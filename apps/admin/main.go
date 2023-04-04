@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 	"test/controller/login"
 	"test/controller/logout"
 	"test/controller/user"
+	"test/controller/user_contact"
 	"test/utils"
 	"test/utils/database"
 
@@ -31,25 +31,45 @@ func NewServer() pb.AdminServer {
 	return &server{}
 }
 
+// Registration
+// 用于用户的注册
 func (s *server) Registration(ctx context.Context, in *pb.RegistrationReq) (*pb.RegistrationRsp, error) {
 	err := user.AddUser(in.Name, in.Passwd)
 	return nil, err
 }
+
+// Login
+// 用于用户的登录
 func (s *server) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginRsp, error) {
 	err := login.Login(in.Name, in.Password)
 	return nil, err
 }
+
+// Logout
+// 用于用户的登出
 func (s *server) Logout(ctx context.Context, in *pb.LogoutReq) (*pb.LogoutRsp, error) {
 	err := logout.Logout(in.Name)
 	return nil, err
 }
+
+// 不足
+// 这里的err 必然是nil 需要注意
+// 感觉是因为 我GetUserList 返回引用的原因 , 等我先写完大致功能之后再回来改
 func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq) (out *pb.OnlineUserListRsp, err error) {
 	//	先初始化再使用!
+	out = &pb.OnlineUserListRsp{}
 	out.Name, err = user.GetUserList()
 
-	fmt.Println("out.Name :", out.Name)
 	return out, err
 }
+
+func (s *server) AddAndRemoveBlackList(ctx context.Context, in *pb.AddAndRemoveBlackListReq) (out *pb.AddAndRemoveBlackListRsp, err error) {
+	// 因为是int32 这里做一层转换
+	err = user_contact.ChangeFriendContact(int(in.OwnerId), int(in.TargetId), int(in.Type))
+
+	return nil, err
+}
+
 func main() {
 	// Create a listener on TCP port
 	lis, err := net.Listen("tcp", ":9999")

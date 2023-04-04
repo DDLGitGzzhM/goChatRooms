@@ -22,3 +22,13 @@ CREATE TABLE `message` (
     PRIMARY KEY (`id`),
     INDEX `idxUserId`(`userId`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT '消息';
+
+CREATE TABLE `user_contact`(
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `Aid` int(10)  NOT NULL COMMENT '用户id',
+    `Bid` int(10)  NOT NULL COMMENT '对方的id',
+    `contact_Type` int(10) NOT NULL COMMENT  '两者的关系',
+    `cTime` datetime NOT NULL COMMENT '创建时间',
+    `mTime` datetime DEFAULT NOW() COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT '用户关系表';
