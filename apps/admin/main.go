@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"test/controller/login"
@@ -86,9 +87,22 @@ func (s *server) AddAndRemoveBlackList(ctx context.Context, in *pb.AddAndRemoveB
 // 发送消息
 func (s *server) SendMessage(ctx context.Context, in *pb.SendMessageReq) (out *pb.SendMessageRsp, err error) {
 	err = message.AddMessage(in)
+	fmt.Println("AddMessage")
 	return nil, err
 }
 
+// GetMessage
+// 获取消息
+func (s *server) GetMessage(ctx context.Context, in *pb.GetMessageReq) (out *pb.GetMessageRsp, err error) {
+	//err := error()
+	//
+	//if in.Type == 1 {
+	//	 ,err = message.GetMessageListAny(int(in.RoomId))
+	//}else {
+	//
+	//}
+	return nil, err
+}
 func main() {
 	// Create a listener on TCP port
 	lis, err := net.Listen("tcp", ":9999")

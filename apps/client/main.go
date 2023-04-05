@@ -13,10 +13,6 @@ import (
 	pb "test/protocol/admin"
 )
 
-const (
-	defaultName = "world"
-)
-
 func main() {
 	// 连接grpc服务器
 	conn, err := grpc.Dial("localhost:9999", grpc.WithInsecure())
@@ -48,20 +44,28 @@ func main() {
 	//	TargetId: 3,
 	//	Type:     3,
 	//})
-	emptyJson, err := json.Marshal(map[string]interface{}{})
-	rply, err := c.SendMessage(ctx, &pb.SendMessageReq{
-		UserId:    2,
-		RoomId:    1,
-		IsSendAll: true,
-		ToUserIds: string(emptyJson),
-		Content:   "你好 , 世界",
-	})
-	fmt.Println(rply)
 
+	// 发送信息的测试
+	SendMessage_Fliter(c, ctx)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
 
 	// 打印服务的返回的消息
 	log.Printf("Greeting: %s", err)
+}
+
+// 这个写在客户端用于处理信息的过滤
+func SendMessage_Fliter(c pb.AdminClient, ctx context.Context) {
+	emptyJson, _ := json.Marshal(map[string]interface{}{})
+
+	rply, _ := c.SendMessage(ctx, &pb.SendMessageReq{
+		UserId:    2,
+		RoomId:    1,
+		IsSendAll: true,
+		ToUserIds: string(emptyJson),
+		Content:   "你好 , 世界",
+		TargetId:  0,
+	})
+	fmt.Println("rply :", rply)
 }

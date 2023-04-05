@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -44,7 +45,22 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{
 			"message": err.Error()})
 	})
+	r.GET("/sendMessage", func(c *gin.Context) {
 
+		content := c.Query("message")
+
+		emptyJson, _ := json.Marshal(map[string]interface{}{})
+		rply, _ := pb.NewAdminClient(conn).SendMessage(context.Background(), &pb.SendMessageReq{
+			UserId:    2,
+			RoomId:    1,
+			IsSendAll: true,
+			ToUserIds: string(emptyJson),
+			Content:   content,
+			TargetId:  0,
+		})
+		fmt.Println("rply :", rply)
+
+	})
 	// 启动 HTTP 服务器
 	err = r.Run(":9391")
 	if err != nil {

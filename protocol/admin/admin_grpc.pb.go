@@ -26,6 +26,7 @@ const (
 	Admin_GetOnlineUserList_FullMethodName     = "/admin.Admin/GetOnlineUserList"
 	Admin_AddAndRemoveBlackList_FullMethodName = "/admin.Admin/AddAndRemoveBlackList"
 	Admin_SendMessage_FullMethodName           = "/admin.Admin/SendMessage"
+	Admin_GetMessage_FullMethodName            = "/admin.Admin/GetMessage"
 )
 
 // AdminClient is the client API for Admin service.
@@ -46,6 +47,8 @@ type AdminClient interface {
 	AddAndRemoveBlackList(ctx context.Context, in *AddAndRemoveBlackListReq, opts ...grpc.CallOption) (*AddAndRemoveBlackListRsp, error)
 	// 发送消息
 	SendMessage(ctx context.Context, in *SendMessageReq, opts ...grpc.CallOption) (*SendMessageRsp, error)
+	// 获得消息
+	GetMessage(ctx context.Context, in *GetMessageReq, opts ...grpc.CallOption) (*GetMessageRsp, error)
 }
 
 type adminClient struct {
@@ -119,6 +122,15 @@ func (c *adminClient) SendMessage(ctx context.Context, in *SendMessageReq, opts 
 	return out, nil
 }
 
+func (c *adminClient) GetMessage(ctx context.Context, in *GetMessageReq, opts ...grpc.CallOption) (*GetMessageRsp, error) {
+	out := new(GetMessageRsp)
+	err := c.cc.Invoke(ctx, Admin_GetMessage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminServer is the server API for Admin service.
 // All implementations must embed UnimplementedAdminServer
 // for forward compatibility
@@ -137,6 +149,8 @@ type AdminServer interface {
 	AddAndRemoveBlackList(context.Context, *AddAndRemoveBlackListReq) (*AddAndRemoveBlackListRsp, error)
 	// 发送消息
 	SendMessage(context.Context, *SendMessageReq) (*SendMessageRsp, error)
+	// 获得消息
+	GetMessage(context.Context, *GetMessageReq) (*GetMessageRsp, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -164,6 +178,9 @@ func (UnimplementedAdminServer) AddAndRemoveBlackList(context.Context, *AddAndRe
 }
 func (UnimplementedAdminServer) SendMessage(context.Context, *SendMessageReq) (*SendMessageRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedAdminServer) GetMessage(context.Context, *GetMessageReq) (*GetMessageRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMessage not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 
@@ -304,6 +321,24 @@ func _Admin_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_GetMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMessageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetMessage(ctx, req.(*GetMessageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Admin_ServiceDesc is the grpc.ServiceDesc for Admin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -338,6 +373,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendMessage",
 			Handler:    _Admin_SendMessage_Handler,
+		},
+		{
+			MethodName: "GetMessage",
+			Handler:    _Admin_GetMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
