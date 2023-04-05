@@ -85,7 +85,7 @@ func (s *server) AddAndRemoveBlackList(ctx context.Context, in *pb.AddAndRemoveB
 // SendMessage
 // 发送消息
 func (s *server) SendMessage(ctx context.Context, in *pb.SendMessageReq) (out *pb.SendMessageRsp, err error) {
-	message.AddMessage(in)
+	err = message.AddMessage(in)
 	return nil, err
 }
 

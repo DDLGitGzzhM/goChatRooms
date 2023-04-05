@@ -2,12 +2,17 @@ syntax = "proto3";
 
 package admin;
 import "google/protobuf/descriptor.proto";
+import "google/api/annotations.proto";
 option go_package="/.;";
 
 // 定义一个Admin服务
 service Admin {
   // 注册接口
-  rpc Registration(RegistrationReq) returns (RegistrationRsp){};
+  rpc Registration(RegistrationReq) returns (RegistrationRsp){
+    option (google.api.http) = {
+      get: "/register",
+    };
+  };
   // 登录接口
   rpc Login(LoginReq) returns (LoginRsp){}
   // 登出接口
