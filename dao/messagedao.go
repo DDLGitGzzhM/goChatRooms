@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 	"test/models"
@@ -17,6 +18,7 @@ func AddMessage_Mysql(message models.Message) *gorm.DB {
 // value : message_json ( .... )
 // message_json[content : "消息内容]
 func AddMessage(timestamp int, roomId, message_json string) {
+	fmt.Println("AddMessage >>>  redis")
 	database.Red.ZAdd(context.Background(), roomId, &redis.Z{
 		Score:  float64(timestamp),
 		Member: message_json,
@@ -28,7 +30,6 @@ func GetMessageListAny(roomId string) []string {
 	if err != nil {
 		return nil
 	}
-
 	return message_jsons
 }
 

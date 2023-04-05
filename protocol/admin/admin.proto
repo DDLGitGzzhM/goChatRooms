@@ -100,17 +100,20 @@ message LogoffRsp{}
 message GetMessageReq{
 //  用于请求是群发消息 还是 私聊消息
   int64 type  = 1 ;
-//  用于看是哪个群聊的消息
+
+//  如果是群发的 用于看是哪个群聊的消息
   int64  roomId = 2;
-//  用于看是哪个私聊的消息
+
+//  如果是私发的 用于看是哪个用户发的消息
   int64  TargetId = 3;
-//  用于看是谁发的id
 }
 message GetMessageRsp{
-//  发送的消息内容
+//  返回 发送的消息内容
   repeated string content = 1;
-//  发送消息的时间
+//  返回 发送消息的时间
   repeated string time = 2;
-//  发送消息的Id
-
+//  返回 消息发送的对象
+//  对于群发消息来讲 , 这里的 TargetId = userId
+//  但是对于私发消息来说 , 这里的 TargetId = targetid
+  repeated string TargetId = 3;
 }

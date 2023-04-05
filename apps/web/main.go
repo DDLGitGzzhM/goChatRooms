@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
+	"strconv"
 	pb "test/protocol/admin"
 )
 
@@ -61,6 +62,26 @@ func main() {
 		fmt.Println("rply :", rply)
 
 	})
+
+	r.GET("/getMessage", func(c *gin.Context) {
+
+		Type := c.Query("Type")
+		roomId := c.Query("roomId")
+		TargetId := c.Query("TargetId")
+
+		tType, _ := strconv.Atoi(Type)
+		tRoomId, _ := strconv.Atoi(roomId)
+		tTargetId, _ := strconv.Atoi(TargetId)
+		rply, _ := pb.NewAdminClient(conn).GetMessage(context.Background(), &pb.GetMessageReq{
+			Type:     int64(tType),
+			RoomId:   int64(tRoomId),
+			TargetId: int64(tTargetId),
+		})
+		fmt.Println("rply :", rply)
+		c.JSON(http.StatusOK, gin.H{
+			"message": rply})
+	})
+
 	// 启动 HTTP 服务器
 	err = r.Run(":9391")
 	if err != nil {

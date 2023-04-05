@@ -94,14 +94,22 @@ func (s *server) SendMessage(ctx context.Context, in *pb.SendMessageReq) (out *p
 // GetMessage
 // 获取消息
 func (s *server) GetMessage(ctx context.Context, in *pb.GetMessageReq) (out *pb.GetMessageRsp, err error) {
-	//err := error()
-	//
-	//if in.Type == 1 {
-	//	 ,err = message.GetMessageListAny(int(in.RoomId))
-	//}else {
-	//
-	//}
-	return nil, err
+	// 先初始化再使用
+	out = &pb.GetMessageRsp{}
+	out.Content = make([]string, 0, 50)
+	out.Time = make([]string, 0, 50)
+	out.TargetId = make([]string, 0, 50)
+
+	if in.Type == 1 {
+		out.Content, out.Time, out.TargetId, err = message.GetMessageListAny(int(in.RoomId))
+		fmt.Println("out.Content >>>>", out.Content)
+		fmt.Println("out.Time >>>>", out.Time)
+		fmt.Println("out.TargetId >>>>", out.TargetId)
+	} else {
+		//	私发信息还没写 = - =
+	}
+
+	return out, err
 }
 func main() {
 	// Create a listener on TCP port
