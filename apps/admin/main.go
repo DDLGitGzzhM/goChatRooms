@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 	"test/controller/login"
@@ -65,10 +64,10 @@ func (s *server) Logoff(ctx context.Context, in *pb.LogoffReq) (*pb.LogoffRsp, e
 // 不足
 // 这里的err 必然是nil 需要注意
 // 感觉是因为 我GetUserList 返回引用的原因 , 等我先写完大致功能之后再回来改
-func (s *server) GetOnlineUserList(ctx context.Context, in *pb.OnlineUserListReq) (out *pb.OnlineUserListRsp, err error) {
+func (s *server) GetUserList(ctx context.Context, in *pb.UserListReq) (out *pb.UserListRsp, err error) {
 	//	先初始化再使用!
-	out = &pb.OnlineUserListRsp{}
-	out.Name, err = user.GetUserList()
+	out = &pb.UserListRsp{}
+	out.NameType, err = user.GetUserList()
 
 	return out, err
 }
@@ -86,8 +85,11 @@ func (s *server) AddAndRemoveBlackList(ctx context.Context, in *pb.AddAndRemoveB
 // SendMessage
 // 发送消息
 func (s *server) SendMessage(ctx context.Context, in *pb.SendMessageReq) (out *pb.SendMessageRsp, err error) {
-	err = message.AddMessage(in)
-	fmt.Println("AddMessage")
+	if in.IsSendAll == true {
+		err = message.AddMessage(in)
+	} else {
+		err = message.AddMessageNotAll(in)
+	}
 	return nil, err
 }
 
@@ -102,9 +104,6 @@ func (s *server) GetMessage(ctx context.Context, in *pb.GetMessageReq) (out *pb.
 
 	if in.Type == 1 {
 		out.Content, out.Time, out.TargetId, err = message.GetMessageListAny(int(in.RoomId))
-		fmt.Println("out.Content >>>>", out.Content)
-		fmt.Println("out.Time >>>>", out.Time)
-		fmt.Println("out.TargetId >>>>", out.TargetId)
 	} else {
 		//	私发信息还没写 = - =
 	}

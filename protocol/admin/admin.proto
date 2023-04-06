@@ -12,17 +12,38 @@ service Admin {
     option (google.api.http) = {
       get: "/register",
     };
+
   };
   // 登录接口
-  rpc Login(LoginReq) returns (LoginRsp){}
+  rpc Login(LoginReq) returns (LoginRsp){
+    option(google.api.http)={
+      get:"/login",
+    };
+  }
   // 登出接口
-  rpc Logout(LogoutReq) returns (LogoutRsp){}
+  rpc Logout(LogoutReq) returns (LogoutRsp){
+    option(google.api.http)={
+      get:"/logout"
+    };
+  }
   // 注销接口
-  rpc Logoff(LogoffReq) returns (LogoffRsp){}
+  rpc Logoff(LogoffReq) returns (LogoffRsp){
+    option(google.api.http)={
+      get:"/logoff"
+    };
+  }
   // 在线列表信息
-  rpc GetOnlineUserList(OnlineUserListReq) returns (OnlineUserListRsp){}
+  rpc GetUserList(UserListReq) returns (UserListRsp){
+    option(google.api.http)={
+      get:"/getUserList"
+    };
+  }
   // 拉黑/加白
-  rpc AddAndRemoveBlackList(AddAndRemoveBlackListReq) returns(AddAndRemoveBlackListRsp){}
+  rpc AddAndRemoveBlackList(AddAndRemoveBlackListReq) returns(AddAndRemoveBlackListRsp){
+    option(google.api.http)={
+      get:"/addAndRemoveBlackList"
+    };
+  }
   // 发送消息
   rpc SendMessage(SendMessageReq)returns(SendMessageRsp){
     option(google.api.http)={
@@ -64,11 +85,11 @@ message LogoutReq{
 message LogoutRsp{}
 
 // OnlineUserListReq 在线列表信息请求
-message OnlineUserListReq{
+message UserListReq{
 }
 // OnlineUserListResp 在线列表信息响应
-message OnlineUserListRsp{
-  repeated string name = 1;
+message UserListRsp{
+  repeated string name_type = 1;
 }
 
 message AddAndRemoveBlackListReq{
@@ -82,10 +103,9 @@ message AddAndRemoveBlackListRsp{
 message SendMessageReq{
   int64 userId = 1;
   int64 roomId = 2;
-  int64 targetId = 3;
-  bool  isSendAll = 4;
-  string toUserIds = 5;
-  string content = 6;
+  bool  isSendAll = 3;
+  string toUserIds = 4;
+  string content = 5;
 }
 message SendMessageRsp{
 }

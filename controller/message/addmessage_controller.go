@@ -68,6 +68,24 @@ func AddMessage(req *pb.SendMessageReq) MessageError {
 	roomId := strconv.Itoa(int(req.RoomId))
 	dao.AddMessage(int(time.Now().Unix()), roomId, string(message_json))
 
+	/*
+		这里需要考虑何时存放进mysql里面
+		目前有的做法考虑是搞一个全局变量计数器 , 当计数器到达一定的数量的时候 我们持久化进数据库
+		不过这里选择 , 存一个放一个
+	*/
+
+	message_mysql := models.Message{
+		UserId:    int(req.UserId),
+		RoomId:    int(req.RoomId),
+		IsSendAll: req.IsSendAll,
+		ToUserIds: req.ToUserIds,
+		Content:   req.Content,
+		TargetId:  int(req.TargetId),
+		CTime:     time.Now(),
+		MTime:     time.Now(),
+	}
+	dao.AddMessage_Mysql(message_mysql)
+
 	return MessageError{
 		ErrorCode:    0,
 		ErrorMessage: "发送成功",

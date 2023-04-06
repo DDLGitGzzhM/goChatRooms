@@ -10,6 +10,7 @@ import (
 func Logoff(name string) error {
 	user_t := models.User{}
 	temp, _ := user.FindUserByName(name)
+	user_t.Status = "下线"
 	user_t.ID = temp.ID
 	user_t.IsDelete = true
 	user_t.MTime = time.Now()

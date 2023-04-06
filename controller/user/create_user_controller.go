@@ -24,7 +24,7 @@ func (e *UserError) Error() string {
 func AddUser(name, password string) (err error) {
 	temp, _ := FindUserByName(name)
 
-	if temp != nil {
+	if temp.Name != "" {
 		return &UserError{
 			ErrorCode:    1,
 			ErrorMessage: "不能重复创建",

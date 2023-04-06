@@ -23,7 +23,7 @@ const (
 	Admin_Login_FullMethodName                 = "/admin.Admin/Login"
 	Admin_Logout_FullMethodName                = "/admin.Admin/Logout"
 	Admin_Logoff_FullMethodName                = "/admin.Admin/Logoff"
-	Admin_GetOnlineUserList_FullMethodName     = "/admin.Admin/GetOnlineUserList"
+	Admin_GetUserList_FullMethodName           = "/admin.Admin/GetUserList"
 	Admin_AddAndRemoveBlackList_FullMethodName = "/admin.Admin/AddAndRemoveBlackList"
 	Admin_SendMessage_FullMethodName           = "/admin.Admin/SendMessage"
 	Admin_GetMessage_FullMethodName            = "/admin.Admin/GetMessage"
@@ -42,7 +42,7 @@ type AdminClient interface {
 	// 注销接口
 	Logoff(ctx context.Context, in *LogoffReq, opts ...grpc.CallOption) (*LogoffRsp, error)
 	// 在线列表信息
-	GetOnlineUserList(ctx context.Context, in *OnlineUserListReq, opts ...grpc.CallOption) (*OnlineUserListRsp, error)
+	GetUserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListRsp, error)
 	// 拉黑/加白
 	AddAndRemoveBlackList(ctx context.Context, in *AddAndRemoveBlackListReq, opts ...grpc.CallOption) (*AddAndRemoveBlackListRsp, error)
 	// 发送消息
@@ -95,9 +95,9 @@ func (c *adminClient) Logoff(ctx context.Context, in *LogoffReq, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *adminClient) GetOnlineUserList(ctx context.Context, in *OnlineUserListReq, opts ...grpc.CallOption) (*OnlineUserListRsp, error) {
-	out := new(OnlineUserListRsp)
-	err := c.cc.Invoke(ctx, Admin_GetOnlineUserList_FullMethodName, in, out, opts...)
+func (c *adminClient) GetUserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListRsp, error) {
+	out := new(UserListRsp)
+	err := c.cc.Invoke(ctx, Admin_GetUserList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ type AdminServer interface {
 	// 注销接口
 	Logoff(context.Context, *LogoffReq) (*LogoffRsp, error)
 	// 在线列表信息
-	GetOnlineUserList(context.Context, *OnlineUserListReq) (*OnlineUserListRsp, error)
+	GetUserList(context.Context, *UserListReq) (*UserListRsp, error)
 	// 拉黑/加白
 	AddAndRemoveBlackList(context.Context, *AddAndRemoveBlackListReq) (*AddAndRemoveBlackListRsp, error)
 	// 发送消息
@@ -170,8 +170,8 @@ func (UnimplementedAdminServer) Logout(context.Context, *LogoutReq) (*LogoutRsp,
 func (UnimplementedAdminServer) Logoff(context.Context, *LogoffReq) (*LogoffRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logoff not implemented")
 }
-func (UnimplementedAdminServer) GetOnlineUserList(context.Context, *OnlineUserListReq) (*OnlineUserListRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOnlineUserList not implemented")
+func (UnimplementedAdminServer) GetUserList(context.Context, *UserListReq) (*UserListRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserList not implemented")
 }
 func (UnimplementedAdminServer) AddAndRemoveBlackList(context.Context, *AddAndRemoveBlackListReq) (*AddAndRemoveBlackListRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAndRemoveBlackList not implemented")
@@ -267,20 +267,20 @@ func _Admin_Logoff_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Admin_GetOnlineUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OnlineUserListReq)
+func _Admin_GetUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserListReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).GetOnlineUserList(ctx, in)
+		return srv.(AdminServer).GetUserList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Admin_GetOnlineUserList_FullMethodName,
+		FullMethod: Admin_GetUserList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).GetOnlineUserList(ctx, req.(*OnlineUserListReq))
+		return srv.(AdminServer).GetUserList(ctx, req.(*UserListReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -363,8 +363,8 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Admin_Logoff_Handler,
 		},
 		{
-			MethodName: "GetOnlineUserList",
-			Handler:    _Admin_GetOnlineUserList_Handler,
+			MethodName: "GetUserList",
+			Handler:    _Admin_GetUserList_Handler,
 		},
 		{
 			MethodName: "AddAndRemoveBlackList",

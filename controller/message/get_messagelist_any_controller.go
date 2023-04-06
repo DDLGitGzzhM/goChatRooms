@@ -7,6 +7,8 @@ import (
 	"test/models"
 )
 
+// http://localhost:9391/getMessage?Type=1&roomId=1&TargetId=0
+// http://localhost:9391/sendMessage?message=消息,消息
 func GetMessageListAny(roomId int) ([]string, []string, []string, error) {
 	troomId := strconv.Itoa(roomId)
 	temp := dao.GetMessageListAny(troomId)
